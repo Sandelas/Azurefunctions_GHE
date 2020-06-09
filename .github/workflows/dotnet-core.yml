@@ -37,4 +37,26 @@ jobs:
       with:
         name: drop
         path: ./Templates
+        
+    - name: Azure Login
+      uses: Azure/login@v1.1
+  with:
+    # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+    creds: {{ secrets.AZURE_CREDENTIALS }}
+    # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
+    enable-AzPSSession: # optional
+    
+    - name: Azure Functions Action
+      uses: Azure/functions-action@v1.1.4
+       with:
+    # Name of the Azure Function App
+    app-name: GEN-UNIQUE
+    # Path to package or folder. *.zip or a folder to deploy
+    package: '${{env.PUBLISH_PATH}}/publish'
+    # Function app slot to be deploy to
+    slot-name: # optional
+    # Publish profile (*.publishsettings) file contents with web deploy secrets
+    publish-profile: # optional
+          
+    
 
