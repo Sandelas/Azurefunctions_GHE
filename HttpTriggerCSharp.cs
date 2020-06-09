@@ -25,7 +25,7 @@ namespace Company.Function
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
             
-          //  log.LogInformation($"Action found = {name}\nPayload = {data}");
+            log.LogInformation($"Action found = {name}\nPayload = {data}");
             Console.WriteLine("Action found =" + name.ToString());
             Console.WriteLine("Payload =" + data.ToString());
             
