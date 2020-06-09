@@ -32,3 +32,9 @@ jobs:
       with:
         name: drop
         path: '${{env.PUBLISH_PATH}}/publish'
+    - name: Publish ARM artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: drop
+        path: Templates
+
