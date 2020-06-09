@@ -39,16 +39,11 @@ jobs:
         path: ./Templates
     - name: Azure Login
       uses: Azure/login@v1.1
-        with:
-          creds:  {{ secrets.AZURE_CREDENTIALS }}
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Azure Functions Action
       uses: Azure/functions-action@v1.1.4
-       with:
+      with:
         app-name: GEN-UNIQUE
         package: '${{env.PUBLISH_PATH}}/publish'
-        slot-name: # optional
-        publish-profile: # optional
-          
-    
-
