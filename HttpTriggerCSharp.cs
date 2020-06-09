@@ -25,7 +25,9 @@ namespace Company.Function
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
             
-            log.LogInformation($"Action found = {name}\nPayload = {data}");
+          //  log.LogInformation($"Action found = {name}\nPayload = {data}");
+            Console.WriteLine("Action found =" + name.ToString());
+            Console.WriteLine("Payload =" + data.ToString());
             
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
