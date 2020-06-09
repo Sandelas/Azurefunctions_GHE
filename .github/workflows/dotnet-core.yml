@@ -1,0 +1,49 @@
+name: Deploy to Azure Functions
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+env:
+ PUBLISH_PATH: '.'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.207
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: publish
+      run: dotnet build -c Release -o '${{env.PUBLISH_PATH}}/publish'
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: drop
+        path: '${{env.PUBLISH_PATH}}/publish'
+    - name: Publish ARM artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: drop
+        path: ./Templates
+    - name: Azure Login
+      uses: Azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Azure Functions Action
+      uses: Azure/functions-action@v1.1.4
+      with:
+        app-name: GEN-UNIQUE
+        package: '${{env.PUBLISH_PATH}}/publish'
